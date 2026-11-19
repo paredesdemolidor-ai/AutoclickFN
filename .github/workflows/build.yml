@@ -13,11 +13,9 @@ jobs:
         with:
           gradle-version: 8.5
       - run: unzip -q AutoClickFN.zip
-      - run: cd AutoClickFN && gradle assembleDebug assembleRelease --continue
+      - run: cd AutoClickFN && gradle assembleRelease assembleDebug --continue
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: AutoClickFN-apk
-          path: |
-            AutoClickFN/app/build/outputs/apk/release/app-release.apk
-            AutoClickFN/app/build/outputs/apk/debug/app-debug.apk
+          name: NexMacro-apk
+          path: AutoClickFN/app/build/outputs/apk/**/*.apk
