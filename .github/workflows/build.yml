@@ -12,15 +12,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.5
-      - name: Conferir arquivos
+      - name: Extrair zip
         run: |
-          ls -la
           rm -rf AutoClickFN
           unzip -q -o AutoClickFN.zip
           grep -n "versionName\|applicationId" AutoClickFN/app/build.gradle
-      - run: cd AutoClickFN && gradle assembleRelease assembleDebug --continue
+      - name: Compilar
+        run: |
+          cd AutoClickFN
+          gradle assembleDebug assembleRelease --continue --stacktrace 2>&1 | tee ../build.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: NexMacro-apk
-          path: AutoClickFN/app/build/outputs/apk/**/*.apk
+          path: |
+            AutoClickFN/app/build/outputs/apk/**/*.apk
+            build.log
